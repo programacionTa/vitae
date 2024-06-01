@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Currículum Vitae</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script type="text/javascript" src='alertConfig.js'></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WDYBWY97KW"></script>
+<!--Google Analytics-->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'G-WDYBWY97KW');
+</script>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        .leaflet-container {
+            height: 400px;
+            width: 600px;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+    <style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <header>
+
+      <di v class="divTitulo">
+        
+       <h1 id='title'>Mariana Romero</h1> 
+       <img src="billies.jpeg" alt="Foto de perfil">
+
+      </div>
+
+  </header>
+  <main>
+    <section class="personal-info">
+        <h2>Información Personal</h2>
+        <ul>
+            <li><label for="name">Cedula:</label> <span id="name">2000000</span></li>
+            <li><label for="email">Correo Electrónico:</label> <span id="email">marianaromero@gmail.com</span></li>
+            <li><label for="phone">Teléfono:</label> <span id="phone">+58424-000000</span></li>
+        </ul>
+    </section>
+    <section class="education">
+        <h2>Educación</h2>
+        <ul>
+            <li>
+                <label for="degree">Primaria:</label> <span id="degree">Juan German Roscio</span>
+                <label for="degree">Secundaria:</label> <span id="degree">U.N.E. Jose Felix Ribas</span>
+                <label for="university">Universidad:</label> <span id="university">Actualmente estudiando en U.N.E.R.G</span>
+                
+            </li>
+        </ul>
+    </section>
+    <section class="experience">
+        <h2>Experiencia Laboral</h2>
+        <ul>
+            <li>
+                <label for="job-title">Título del Trabajo:</label> <span id="job-title">Desarrollador front-end</span>
+                <label for="company">Compañía:</label> <span id="company">Empresa coflaTecnologi</span>
+                <label for="job-description">Descripción del Trabajo:</label> <span id="job-description">Implementación de servicios API y microServicios AI</span>
+            </li>
+        </ul>
+    </section>
+    <section class="skills">
+        <h2>Habilidades</h2>
+        <ul>
+            <li><label for="skill">Habilidad:</label> <span id="skill">Logica de Programación Intermedio</span></li>
+            <li><label for="skill">Habilidad:</label> <span id="skill">Backend desarrollo de servidores web express.js</span></li>
+            <li><label for="skill">Habilidad:</label> <span id="skill">desarrollo de servicios web responsive</span></li>
+        </ul>
+    </section>
+
+    <section class="formulario">
+        <h2>Contacto :</h2>
+
+        <form action="/contacto" method='post' class="formularioo">
+
+            <div class='divInput'>
+                <label>Nombre</label>
+                <input type="text" name="nombre" placeholder="Ingrese Nombre" required>
+            </div>
+
+            <div class='divInput'>
+                <label>Correo</label>
+                <input type="email" name="email" placeholder="Ingrese Email" required>
+            </div>
+
+            <div class='divInput'>
+                <label>Comentario</label>
+                <input type="text" name="comentario" placeholder="Ingrese Comentario" required>
+            </div>
+
+            <div class="divInput">
+               <div class="g-recaptcha" data-sitekey="6LeANO0pAAAAAJUUzZrlyIzoEFZGdhSUFve7hdG-"></div>  
+            </div>
+            
+
+            <div class='divButton'>
+                <button title="Enviar Mensaje" class='button'>Enviar</button>
+            </div>
+
+        </form>
+    </section>
+
+   
+</main>
+
+
+<div id='map'></div>
+<script type="text/javascript" src="funcionalidad.js"></script>
+
+<script>
+    window.addEventListener('load',()=>{
+     const socket = io();
+    const map = L.map('map').fitWorld();
+
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    function onLocationFound(e) {
+        const radius = e.accuracy / 2;
+
+        const locationMarker = L.marker(e.latlng).addTo(map)
+            .bindPopup(`You are within ${radius} meters from this point`).openPopup();
+
+        const locationCircle = L.circle(e.latlng, radius).addTo(map);
+        console.log(`latitud : ${e.latlng.lat} longitud : ${e.latlng.lng}`)
+        socket.emit('location',e.latlng);
+        fetch(`/ubicacion?lat=${e.latlng.lat}&lng=${e.latlng.lng}`)
+        .then(res=>res.json())
+        .then(respuesta=>{
+            console.log(respuesta,'XXXXXXXXXXXXXXXXXXXXXXXXX');
+        })
+        
+    }
+
+    function onLocationError(e) {
+        alert(e.message);
+    }
+
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    map.locate({setView: true, maxZoom: 16});
+
+    function locate(){
+        map.locate({setView: true, maxZoom: 16});
+    }
+    setInterval(locate,5000);
+    })
+</script>
+<script src="/socket.io/socket.io.js"></script>
+</body>
+</html>
