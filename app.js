@@ -29,7 +29,7 @@ const io = new Server(server);
 const transporter = nodemailer.createTransport({
   service:'Gmail',
    auth:{
-    user:'valeriakeydimar17@gmail.com',
+    user:'programacionjavascript9@gmail.com',
     pass:PASSWORDAPP
   }
 });
@@ -100,7 +100,7 @@ try{
   const respuesta = await controllers.add(nombre,email,comentario,ip,pais);
     // Detalles del correo electrónico
   const mailOptions = {
-    from:'valeriakeydimar17@gmail.com',
+    from:'programacionjavascript9@gmail.com',
     to: 'programacion2ais@dispostable.com', // Agrega aquí la dirección de correo a la lista de destinatarios
     subject: 'Un usuario a enviado un mensaje',
     text: `Datos del usuario:\n\n
