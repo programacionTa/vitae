@@ -72,8 +72,8 @@ app.get('/ubicacion', async (req, res) => {
   }
   const config = {
   headers: {
-    'Referer': 'https://curriculum-upeh.onrender.com', // Establece el Referer personalizado
-    'User-Agent': 'curriculumVitaeee' // Establece el User-Agent personalizado
+    'Referer': 'https://vitae-31c4.onrender.com', // Establece el Referer personalizado
+    'User-Agent': 'curriculumProgramacion' // Establece el User-Agent personalizado
   },
   timeout: 60000 // 60 segundos
 };
